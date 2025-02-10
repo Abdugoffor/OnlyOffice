@@ -35,12 +35,15 @@ return [
         ],
     ],
 
+    'telegram_bot' => [
+        'token' => env('TELEGRAM_BOT_TOKEN'),
+    ],
     // 'onlyoffice' => [
     //     'client_id' => env('ONLYOFFICE_CLIENT_ID'),
     //     'client_secret' => env('ONLYOFFICE_CLIENT_SECRET'),
     //     'base_url' => env('ONLYOFFICE_BASE_URL'),
     //     'redirect' => env('ONLYOFFICE_REDIRECT_URI'),
-    //     // 'secret' => env('ONLYOFFICE_SECRET'),
+    // 'secret' => env('ONLYOFFICE_SECRET'),
     // ],
 
 
