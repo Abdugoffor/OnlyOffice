@@ -6,7 +6,7 @@ sudo docker run -itd --name onlyoffice-document-server \
 ```
 OnlyOffice serverni ngrok orqali https ga aylantrish
 ```
-ngrok http 8089
+ngrok http 8090
 ```
 OnlyOffice token siz murojat qilish uchun:
 ```
