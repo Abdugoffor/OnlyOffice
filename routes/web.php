@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/documents-edit/{id}', [DocumentController::class, 'editDocument'])->name('documents.edit');
     Route::post('/documents/callback/{id}', [DocumentController::class, 'callback'])->name('documents.callback');
     Route::get('/new-document/{document}', [DocumentController::class, 'newDocument'])->name('new.document');
+    Route::delete('/delete-document/{document}', [DocumentController::class, 'deleteDocument'])->name('delete.document');
 
 });
 

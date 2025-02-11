@@ -33,6 +33,9 @@
                 <th>Edit</th>
                 <th>Created</th>
                 <th>History</th>
+                <th>
+                    Delete
+                </th>
             </tr>
             @foreach ($models as $model)
                 <tr>
@@ -61,9 +64,10 @@
                                         <ul class="list-group ml-5">
                                             @foreach ($model->history as $history)
                                                 <li>
-                                                    {{ $history->user->name }}, 
-                                                    {{ $history->created_at->diffForHumans() }} , 
-                                                    <a href="{{ asset('storage/'.$history->path) }}" target="_blank">File</a>
+                                                    {{ $history->user->name }},
+                                                    {{ $history->created_at->diffForHumans() }} ,
+                                                    <a href="{{ asset('storage/' . $history->path) }}"
+                                                        target="_blank">File</a>
                                                 </li>
                                             @endforeach
                                         </ul>
@@ -77,9 +81,16 @@
                             <!-- /.modal-dialog -->
                         </div>
                     </td>
+                    <td>
+                        <form action="{{ route('delete.document', $model->id) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger" type="submit">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             @endforeach
         </table>
-
+        {{ $models->links() }}
     </section>
 @endsection
