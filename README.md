@@ -8,3 +8,18 @@ OnlyOffice serverni ngrok orqali https ga aylantrish
 ```
 ngrok http 8089
 ```
+OnlyOffice token siz murojat qilish uchun:
+```
+docker exec -it COTAINER_ID bash
+```
+```
+nano /etc/onlyoffice/documentserver local.json
+```
+"token": {
+        "enable": {
+          "request": {
+            "inbox": false,
+            "outbox": false
+          },
+          "browser": false
+        },
