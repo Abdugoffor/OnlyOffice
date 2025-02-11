@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/store-documents', [DocumentController::class, 'storeDocuments'])->name('store.documents');
     Route::get('/documents-edit/{id}', [DocumentController::class, 'editDocument'])->name('documents.edit');
     Route::post('/documents/callback/{id}', [DocumentController::class, 'callback'])->name('documents.callback');
+    Route::get('/new-document/{document}', [DocumentController::class, 'newDocument'])->name('new.document');
 
 });
 

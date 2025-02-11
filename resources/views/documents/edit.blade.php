@@ -7,11 +7,11 @@
     <title>Hujjatni tahrirlash</title>
     {{-- <script src="http://45.92.173.139:8089/web-apps/apps/api/documents/api.js"></script> --}}
     {{-- <script src="http://localhost/web-apps/apps/api/documents/api.js"></script> --}}
-    <script src="https://2ba8-45-92-173-139.ngrok-free.app/web-apps/apps/api/documents/api.js"></script>
-</head>
-
-<body bgcolor="grey" style="height: 100vh">
     
+    <script src="https://fcf3-45-92-173-139.ngrok-free.app/web-apps/apps/api/documents/api.js"></script>
+</head>
+<body bgcolor="grey" style="height: 100vh">
+
     <h1>Hujjatni tahrirlash: {{ $config['document']['title'] }}</h1>
     <div id="editor"></div>
     <script>

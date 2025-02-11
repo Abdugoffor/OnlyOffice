@@ -73,7 +73,6 @@ class DocumentController extends Controller
                 'documentType' => $this->getDocumentType($document->path),
                 'editorConfig' => [
                     'mode' => 'edit',
-                    'method' => 'POST',
                     'callbackUrl' => route('documents.callback', ['id' => $document->id]),
 
                 ],
@@ -141,4 +140,3 @@ class DocumentController extends Controller
         }
     }
 }
-
