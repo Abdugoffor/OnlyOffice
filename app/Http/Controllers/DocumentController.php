@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Document;
 use App\Services\DocumentService;
 use App\Services\TelegramServices;
+use App\Services\TokenGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -65,9 +66,39 @@ class DocumentController extends Controller
         try {
 
             $document = Document::findOrFail($id);
+            $payload = [
+                "document" => [
+                    "fileType" => pathinfo($document->path, PATHINFO_EXTENSION),
+                    "key" => md5($document->id . time()),
+                    "title" => $document->name,
+                    "url" => asset('storage/' . $document->path),
+                ],
+                "documentType" => $this->getDocumentType($document->path),
+                "editorConfig" => [
+                    "mode" => "edit",
+                    "callbackUrl" => route('documents.callback', ['id' => $document->id]),
+                ],
+                "iat" => time(), // Token yaratilgan vaqt
+                "exp" => time() + 3600, // Token muddati 1 soat
+            ];
+            
+            $token = TokenGenerator::encode($payload);
 
-            $config = $this->documentService->editDocument($document);
-
+            $config = [
+                'document' => [
+                    'fileType' => pathinfo($document->path, PATHINFO_EXTENSION),
+                    'key' => md5($document->id . time()),
+                    'title' => $document->name,
+                    'url' => asset('storage/' . $document->path),
+                    'token' => $token,
+                ],
+                'documentType' => $this->getDocumentType($document->path),
+                'editorConfig' => [
+                    'mode' => 'edit',
+                    'callbackUrl' => route('documents.callback', ['id' => $document->id]),
+                    'token' => $token
+                ],
+            ];
             return view('documents.edit', compact('config'));
         } catch (\Throwable $th) {
 
@@ -130,8 +161,26 @@ class DocumentController extends Controller
 
             abort(500);
         }
-    }
 
+    }
+    private function getDocumentType($filePath)
+    {
+        $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+
+        switch ($extension) {
+            case 'docx':
+            case 'doc':
+                return 'word';
+            case 'xlsx':
+            case 'xls':
+                return 'spreadsheet';
+            case 'pptx':
+            case 'ppt':
+                return 'presentation';
+            default:
+                return 'word';
+        }
+    }
 
     public function callback(Request $request, $id)
     {

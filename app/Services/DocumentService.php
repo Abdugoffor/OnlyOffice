@@ -32,17 +32,21 @@ class DocumentService
 
     public function editDocument($document)
     {
+        $token = $this->tokenGenerate($document);
+
         $config = [
             'document' => [
                 'fileType' => pathinfo($document->path, PATHINFO_EXTENSION),
                 'key' => md5($document->id . time()),
                 'title' => $document->name,
                 'url' => asset('storage/' . $document->path),
+                'token' => $token,
             ],
             'documentType' => $this->getDocumentType($document->path),
             'editorConfig' => [
                 'mode' => 'edit',
                 'callbackUrl' => route('documents.callback', ['id' => $document->id]),
+                'token' => $token
             ],
         ];
 
@@ -111,7 +115,7 @@ class DocumentService
     private function getDocumentType($filePath)
     {
         $extension = pathinfo($filePath, PATHINFO_EXTENSION);
-        
+
         switch ($extension) {
             case 'docx':
             case 'doc':
@@ -126,4 +130,27 @@ class DocumentService
                 return 'word';
         }
     }
+
+    public function tokenGenerate($document)
+    {
+        $payload = [
+            "document" => [
+                "fileType" => pathinfo($document->path, PATHINFO_EXTENSION),
+                "key" => md5($document->id . time()),
+                "title" => $document->name,
+                "url" => asset('storage/' . $document->path),
+            ],
+            "documentType" => $this->getDocumentType($document->path),
+            "editorConfig" => [
+                "mode" => "edit",
+                "callbackUrl" => route('documents.callback', ['id' => $document->id]),
+            ],
+            "iat" => time(), // Token yaratilgan vaqt
+            "exp" => time() + 3600, // Token muddati 1 soat
+        ];
+
+        $token = TokenGenerator::encode($payload);
+        return $token;
+    }
+
 }
